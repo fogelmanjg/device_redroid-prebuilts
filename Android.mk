@@ -77,7 +77,12 @@ $(foreach lib,$(libs),\
 dri_libs := libgallium_dri
 drv_libs := libgallium_drv_video
 ifneq (,$(filter $(TARGET_ARCH),x86 x86_64))
-ifeq (,$(filter $(PLATFORM_VERSION), 15 16))
+# "Baklava" is this branch's PLATFORM_VERSION during Android 16 development
+# (a codename, not yet the numeric "16") - added alongside 15/16 so this
+# skip still fires and doesn't collide with external/intel-media-driver's
+# own iHD_drv_video build (MODULE.TARGET.SHARED_LIBRARIES.iHD_drv_video
+# already defined by external/intel-media-driver).
+ifeq (,$(filter $(PLATFORM_VERSION), 15 16 Baklava))
 $(eval $(call define-redroid-prebuilt-lib,libigdgmm,,libigdgmm.so))
 drv_libs_intel := i965_drv_video iHD_drv_video
 $(foreach lib,$(drv_libs_intel),\
